@@ -13,7 +13,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def checktoken():
     if request.path == '/token':
         return
+        
     token = request.headers.get('token')
+    if token == None:
+        return "Login Required"
+
     result = checkToken(token)
     if result == 101:
         return "ExpiredSignatureError"
