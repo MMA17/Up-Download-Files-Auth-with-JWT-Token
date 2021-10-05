@@ -22,10 +22,9 @@ def checkToken(token):
         # if decoded['username'] == username:
         #     return "Token dung"
     except ExpiredSignatureError:
-        return "Token het han"
+        return 101
     except InvalidSignatureError:
-        return "Token sai"
+        return 102
     except:
-        return "Token loi"
-    
-    return "Token dung"
+        return 103
+    return 100

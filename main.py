@@ -9,6 +9,21 @@ UPLOAD_FOLDER = 'uploads/'
 app = Flask(__name__, template_folder='templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+@app.before_request
+def checktoken():
+    if request.path == '/token':
+        return
+    token = request.headers.get('token')
+    result = checkToken(token)
+    if result == 101:
+        return "ExpiredSignatureError"
+    elif result == 102:
+        return "InvalidSignatureError"
+    elif result == 103:
+        return "Invalid Token"
+    else:
+        return
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return redirect('/token')
@@ -19,6 +34,7 @@ def gettoken():
     data = request.get_json()
     # print (header)
     # print (request.headers.get('token'))
+    # print (data['username'] + data['password'])
     
     if data['username'] == "admin" and data['password'] == "123456":
         token = genToken(data['username'])
@@ -28,27 +44,22 @@ def gettoken():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    header = dict(request.headers)
-    token = request.headers.get('token')
-    print(header)
-    print(token)
-    result = checkToken(token)
-    print(result)
-    if result == "Token dung":
+    try:
         file = request.files['file']
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return "Tai len thanh cong"
-    return "Tai len that bai"
+    except print(0):
+        return "Tai len that bai"  
+    
 
 @app.route('/download/<filename>')
 def download(filename):
-    token = request.headers.get('token')
-    result = checkToken(token)
-    if result == "Token dung":
+    try:
         file_path = UPLOAD_FOLDER + filename
-        return send_file(file_path, as_attachment=True, attachment_filename=filename)
-    return "Xac thuc that bai"
+        return send_file(file_path, as_attachment=True, download_name=filename)
+    except print(0):
+        return "Xac thuc that bai"
     
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
