@@ -1,0 +1,9 @@
+kubernetes:
+  groups:
+    pod1:
+      process1:
+        ports:
+          - name: main-port
+            protocol: http
+            target_port: 5000
+            port: 8080

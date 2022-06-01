@@ -9,7 +9,7 @@ UPLOAD_FOLDER = 'uploads/'
 app = Flask(__name__, template_folder='templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-PORT = os.environ['PORT'] or 5001
+PORT = os.environ['PORT']
 
 @app.before_request
 def checktoken():
