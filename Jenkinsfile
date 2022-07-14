@@ -12,9 +12,10 @@ pipeline {
                 echo 'Testing..'
                 sh '''
                     echo "Multiline shell steps works too"
-                    ls -lah
+                    ls -lah 
                     pwd
                     whoami
+                    ps -uax
                 '''
             }
         }
