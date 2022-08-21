@@ -9,7 +9,7 @@ UPLOAD_FOLDER = 'uploads/'
 app = Flask(__name__, template_folder='templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-PORT = os.environ['PORT'] or 5001
+# PORT = os.environ['PORT'] or 5001
 
 @app.before_request
 def checktoken():
@@ -68,4 +68,4 @@ def download(filename):
         return "Xac thuc that bai"
     
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=PORT)
+    app.run(host='0.0.0.0', port=5000)
